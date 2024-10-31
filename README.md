@@ -65,7 +65,6 @@ The platform uses the Diamond Pattern (EIP-2535) with the following facets:
 ### Prerequisites
 - Foundry
 - Solidity ^0.8.0
-- Node.js (for testing)
 
 ### Setup
 ```bash
@@ -161,12 +160,7 @@ LiquidationFacet(platformAddress).liquidate(loanId);
 - State validation
 - Event emission
 
-### Best Practices
-1. Always check return values
-2. Use `.call()` for ETH transfers
-3. Implement proper access control
-4. Validate inputs thoroughly
-5. Monitor contract events
+
 
 ## Development
 
@@ -204,16 +198,4 @@ diamondCut.push(FacetCut({
 
 ## License
 
-MIT License. See [LICENSE](./LICENSE) for details.
-
----
-
-## Contributors
-- [Your Name]
-- [Contributor 1]
-- [Contributor 2]
-
-## Contact
-- GitHub Issues
-- Discord: [Your Discord]
-- Email: [Your Email]
+MIT License. 

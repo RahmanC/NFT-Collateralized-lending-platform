@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-
-
-// Storage library to handle diamond storage pattern
 library LibDiamond {
     bytes32 constant DIAMOND_STORAGE_POSITION = keccak256("diamond.storage");
     
@@ -17,6 +13,7 @@ library LibDiamond {
         address owner;
         address treasury;
         mapping(address => bool) admins;
+        bool paused;  // Added pause state to diamond storage
     }
     
     struct LoanData {

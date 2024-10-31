@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
+import "../libraries/LibDiamond.sol";
+import "./PausableModifier.sol";
 
-contract AdminFacet is Pausable {
+contract AdminFacet is PausableModifier {
     event AdminAdded(address indexed admin);
     event AdminRemoved(address indexed admin);
+    event Paused(address account);
+    event Unpaused(address account);
     
     modifier onlyOwner() {
         require(msg.sender == LibDiamond.diamondStorage().owner, "Not owner");
@@ -26,16 +28,20 @@ contract AdminFacet is Pausable {
     
     function removeAdmin(address _admin) external onlyOwner {
         LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
+        require(_admin != ds.owner, "Cannot remove owner");
         ds.admins[_admin] = false;
         emit AdminRemoved(_admin);
     }
     
-    function pause() external onlyAdmin {
-        _pause();
+    function pause() external onlyAdmin whenNotPaused {
+        LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
+        ds.paused = true;
+        emit Paused(msg.sender);
     }
     
-    function unpause() external onlyAdmin {
-        _unpause();
+    function unpause() external onlyAdmin whenPaused {
+        LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
+        ds.paused = false;
+        emit Unpaused(msg.sender);
     }
 }
-
