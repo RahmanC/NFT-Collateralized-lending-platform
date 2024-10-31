@@ -191,12 +191,6 @@ diamondCut.push(FacetCut({
 }));
 ```
 
-### Upgrading Facets
-
-1. Deploy new implementation
-2. Update Diamond Cut
-3. Verify selectors
-4. Test thoroughly
 
 ## License
 
