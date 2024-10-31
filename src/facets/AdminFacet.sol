@@ -1,24 +1,47 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-interface IDiamondProxy {
-    function updateFacet(bytes4 selector, address facetAddress) external;
-}
+import "../libraries/LibDiamond.sol";
+import "./PausableModifier.sol";
 
-contract AdminFacet {
-    address public owner;
-
+contract AdminFacet is PausableModifier {
+    event AdminAdded(address indexed admin);
+    event AdminRemoved(address indexed admin);
+    event Paused(address account);
+    event Unpaused(address account);
+    
     modifier onlyOwner() {
-        require(msg.sender == owner, "Not the owner");
+        require(msg.sender == LibDiamond.diamondStorage().owner, "Not owner");
         _;
     }
-
-    constructor() {
-        owner = msg.sender;
+    
+    modifier onlyAdmin() {
+        require(LibDiamond.diamondStorage().admins[msg.sender], "Not admin");
+        _;
     }
-
-    function updateFacet(bytes4 _selector, address _facetAddress) external onlyOwner {
-        require(_facetAddress != address(0), "Invalid facet address");
-        IDiamondProxy(address(this)).updateFacet(_selector, _facetAddress);
+    
+    function addAdmin(address _admin) external onlyOwner {
+        LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
+        ds.admins[_admin] = true;
+        emit AdminAdded(_admin);
+    }
+    
+    function removeAdmin(address _admin) external onlyOwner {
+        LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
+        require(_admin != ds.owner, "Cannot remove owner");
+        ds.admins[_admin] = false;
+        emit AdminRemoved(_admin);
+    }
+    
+    function pause() external onlyAdmin whenNotPaused {
+        LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
+        ds.paused = true;
+        emit Paused(msg.sender);
+    }
+    
+    function unpause() external onlyAdmin whenPaused {
+        LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
+        ds.paused = false;
+        emit Unpaused(msg.sender);
     }
 }
