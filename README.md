@@ -71,7 +71,7 @@ The platform uses the Diamond Pattern (EIP-2535) with the following facets:
 ### Setup
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/nft-lending-platform.git
+git clone https://github.com/RahmanC/NFT-Collateralized-lending-platform
 
 # Install dependencies
 forge install
