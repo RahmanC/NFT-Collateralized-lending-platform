@@ -28,6 +28,8 @@ This platform enables NFT owners to use their digital assets as collateral for l
 
 ## Architecture
 
+[NFT Collateralized Lending Platform Flow Diagram](https://app.eraser.io/workspace/RjVO5XWiFb0eH50AcEPc?origin=share&elements=_h_MN4VxWp80G0x_GNDzLw)
+
 ### Diamond Pattern Implementation
 The platform uses the Diamond Pattern (EIP-2535) with the following facets:
 
